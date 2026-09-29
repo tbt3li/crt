@@ -1,3 +1,204 @@
-<html>
-<p>testing</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employee Documents | Lahore High Court</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<style>
+:root{
+  --green:#0E3B2C; --green-2:#165240; --brass:#B48A3A; --brass-soft:#F3EAD3;
+  --ink:#1B2521; --muted:#66746D; --line:#E1E7E3; --bg:#F4F6F5; --card:#fff;
+  --word:#2B5CAB; --pdf:#C0392B;
+}
+body{font-family:'Public Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+h1,h2,h3,.brand{font-family:'Libre Baskerville',Georgia,serif}
+
+/* Hero */
+.hero{background:var(--green);color:#fff;position:relative;overflow:hidden;padding:3.5rem 0 5.5rem}
+.hero::before{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,255,255,.035) 46px 48px);}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;
+  background:linear-gradient(90deg,var(--brass),#D8B566,var(--brass))}
+.seal{width:72px;height:72px;border-radius:50%;border:2px solid var(--brass);display:grid;place-items:center;
+  color:var(--brass);font-size:1.9rem;background:rgba(255,255,255,.05)}
+.hero h1{font-size:clamp(1.8rem,4vw,2.9rem);line-height:1.2;font-weight:700}
+.hero p{color:#C9DAD2;max-width:560px}
+.hero .court{color:var(--brass);font-size:.95rem;letter-spacing:.02em}
+
+/* Panel */
+.panel{margin-top:-3.2rem;position:relative;z-index:2;background:var(--card);border-radius:14px;
+  box-shadow:0 18px 40px -18px rgba(14,59,44,.35);border:1px solid var(--line)}
+.toolbar{padding:1.25rem 1.5rem;border-bottom:1px solid var(--line)}
+.search{position:relative}
+.search i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search input{padding-left:2.5rem;height:48px;border-radius:10px;border:1px solid var(--line);background:#FAFBFA}
+.search input:focus{border-color:var(--green-2);box-shadow:0 0 0 .2rem rgba(22,82,64,.15);background:#fff}
+.chip{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:.4rem .95rem;
+  font-size:.875rem;font-weight:500;transition:.15s}
+.chip:hover{border-color:var(--green-2)}
+.chip.active{background:var(--green);border-color:var(--green);color:#fff}
+.chip:focus-visible,.dl:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+
+/* Table */
+.doc-table{margin:0}
+.doc-table thead th{background:#F8FAF9;color:var(--muted);font-weight:600;font-size:.85rem;
+  border-bottom:1px solid var(--line);padding:.9rem 1.5rem}
+.doc-table tbody td{padding:1.1rem 1.5rem;vertical-align:middle;border-color:var(--line)}
+.doc-table tbody tr:hover{background:#FBFCFB}
+.doc-icon{width:44px;height:44px;border-radius:10px;background:var(--brass-soft);color:var(--brass);
+  display:grid;place-items:center;font-size:1.15rem;flex:none}
+.doc-name{font-weight:600;font-size:1rem;margin:0}
+.doc-desc{color:var(--muted);font-size:.88rem;margin:.15rem 0 0}
+.cat{display:inline-block;font-size:.75rem;color:var(--green-2);background:#E6F0EB;border-radius:6px;padding:.1rem .5rem;margin-top:.4rem}
+.col-file{width:150px;text-align:center}
+
+.dl{display:inline-flex;flex-direction:column;align-items:center;gap:.25rem;text-decoration:none;
+  padding:.55rem .9rem;border-radius:10px;border:1px solid transparent;transition:.15s;min-width:84px}
+.dl i{font-size:1.9rem}
+.dl span{font-size:.75rem;font-weight:600;color:var(--muted)}
+.dl.word i{color:var(--word)} .dl.pdf i{color:var(--pdf)}
+.dl.word:hover{background:#EBF1FB;border-color:#C9D9F3}
+.dl.pdf:hover{background:#FCEDEB;border-color:#F3C9C4}
+.dl:hover span{color:var(--ink)}
+.dl.off{opacity:.3;pointer-events:none}
+
+.empty{padding:3rem 1rem;text-align:center;color:var(--muted)}
+.empty i{font-size:2rem;color:var(--brass);margin-bottom:.75rem}
+.foot{padding:1rem 1.5rem;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+footer{color:var(--muted);font-size:.85rem;padding:2rem 0}
+
+@media (max-width:767px){
+  .doc-table thead{display:none}
+  .doc-table tbody tr{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+  .doc-table tbody td{border:0;padding:.9rem 1rem}
+  .doc-table tbody td.name-cell{grid-column:1 / -1;padding-bottom:.25rem}
+  .col-file{width:auto}
+  .doc-table td.col-file{padding-top:.25rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container position-relative" style="z-index:1">
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <div class="seal"><i class="fa-solid fa-scale-balanced"></i></div>
+      <div>
+        <div class="brand fs-5">Lahore High Court</div>
+        <div class="court">Establishment Branch</div>
+      </div>
+    </div>
+    <h1>Employee documents</h1>
+    <p class="mt-3 mb-0">Download forms, notifications and policies in Word or PDF. Search by name or pick a category.</p>
+  </div>
+</header>
+
+<main class="container pb-2">
+  <section class="panel">
+    <div class="toolbar">
+      <div class="row g-3 align-items-center">
+        <div class="col-lg-5">
+          <div class="search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="q" type="search" class="form-control" placeholder="Search documents" aria-label="Search documents">
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div id="chips" class="d-flex flex-wrap gap-2 justify-content-lg-end" role="group" aria-label="Filter by category"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive-none">
+      <table class="table doc-table">
+        <thead>
+          <tr>
+            <th>Document</th>
+            <th class="col-file">Word file</th>
+            <th class="col-file">PDF file</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div id="empty" class="empty d-none">
+        <i class="fa-regular fa-folder-open d-block"></i>
+        No documents match your search. Clear the search or choose "All".
+      </div>
+    </div>
+    <div class="foot" id="count"></div>
+  </section>
+</main>
+
+<footer class="container text-center">
+  Lahore High Court, Lahore. For missing or updated documents, contact the Establishment Branch.
+</footer>
+
+<script>
+/* Edit this list. Set doc or pdf to "" if a format is not available. */
+const DOCS = [
+  {name:"Leave Application Form", desc:"Apply for casual, earned or medical leave.", cat:"Leave", doc:"files/leave-application.docx", pdf:"files/leave-application.pdf"},
+  {name:"Medical Reimbursement Claim", desc:"Claim for treatment expenses with required attachments checklist.", cat:"Medical", doc:"files/medical-claim.docx", pdf:"files/medical-claim.pdf"},
+  {name:"GP Fund Advance Form", desc:"Request a temporary or non-refundable advance from the GP Fund.", cat:"Finance", doc:"files/gpf-advance.docx", pdf:"files/gpf-advance.pdf"},
+  {name:"Service Book Update Request", desc:"Update qualification, address or family details in the service record.", cat:"Service", doc:"files/service-book-update.docx", pdf:"files/service-book-update.pdf"},
+  {name:"No Objection Certificate (NOC)", desc:"Request an NOC for study, passport or outside engagement.", cat:"Service", doc:"files/noc-request.docx", pdf:"files/noc-request.pdf"},
+  {name:"Pay Slip Correction Form", desc:"Report an error in salary, allowances or deductions.", cat:"Finance", doc:"files/payslip-correction.docx", pdf:"files/payslip-correction.pdf"},
+  {name:"Employee Conduct Rules", desc:"Rules of conduct and discipline for court staff.", cat:"Policies", doc:"", pdf:"files/conduct-rules.pdf"},
+  {name:"Transfer and Posting Policy", desc:"Criteria and procedure for transfers and postings.", cat:"Policies", doc:"", pdf:"files/transfer-policy.pdf"},
+  {name:"Pension Case Submission Form", desc:"Start a pension or gratuity case before retirement.", cat:"Finance", doc:"files/pension-case.docx", pdf:"files/pension-case.pdf"},
+  {name:"Maternity Leave Application", desc:"Apply for maternity leave with medical certificate details.", cat:"Leave", doc:"files/maternity-leave.docx", pdf:"files/maternity-leave.pdf"}
+];
+
+const rows = document.getElementById('rows'), chips = document.getElementById('chips'),
+      q = document.getElementById('q'), empty = document.getElementById('empty'), count = document.getElementById('count');
+let active = 'All';
+
+const cats = ['All', ...new Set(DOCS.map(d => d.cat))];
+cats.forEach(c => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'chip' + (c === active ? ' active' : ''); b.textContent = c;
+  b.onclick = () => { active = c; [...chips.children].forEach(x => x.classList.toggle('active', x === b)); render(); };
+  chips.appendChild(b);
+});
+
+const esc = s => s.replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+function fileCell(url, type, name){
+  const word = type === 'word';
+  const icon = word ? 'fa-file-word' : 'fa-file-pdf';
+  const label = word ? 'DOC' : 'PDF';
+  if(!url) return `<td class="col-file"><span class="dl ${type} off" aria-hidden="true"><i class="fa-solid ${icon}"></i><span>Not available</span></span></td>`;
+  return `<td class="col-file"><a class="dl ${type}" href="${esc(url)}" download aria-label="Download ${esc(name)} as ${label}">
+    <i class="fa-solid ${icon}"></i><span>Download</span></a></td>`;
+}
+
+function render(){
+  const t = q.value.trim().toLowerCase();
+  const list = DOCS.filter(d => (active === 'All' || d.cat === active) &&
+    (!t || (d.name + ' ' + d.desc + ' ' + d.cat).toLowerCase().includes(t)));
+  rows.innerHTML = list.map(d => `
+    <tr>
+      <td class="name-cell">
+        <div class="d-flex gap-3 align-items-start">
+          <div class="doc-icon"><i class="fa-regular fa-file-lines"></i></div>
+          <div>
+            <p class="doc-name">${esc(d.name)}</p>
+            <p class="doc-desc">${esc(d.desc)}</p>
+            <span class="cat">${esc(d.cat)}</span>
+          </div>
+        </div>
+      </td>
+      ${fileCell(d.doc, 'word', d.name)}
+      ${fileCell(d.pdf, 'pdf', d.name)}
+    </tr>`).join('');
+  empty.classList.toggle('d-none', list.length > 0);
+  count.textContent = `Showing ${list.length} of ${DOCS.length} documents`;
+}
+q.addEventListener('input', render);
+render();
+</script>
+</body>
 </html>
