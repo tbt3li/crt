@@ -72,11 +72,20 @@ footer{color:var(--muted);font-size:.85rem;padding:2rem 0}
 
 @media (max-width:767px){
   .doc-table thead{display:none}
-  .doc-table tbody tr{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
-  .doc-table tbody td{border:0;padding:.9rem 1rem}
-  .doc-table tbody td.name-cell{grid-column:1 / -1;padding-bottom:.25rem}
+  .doc-table tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;
+    column-gap:.25rem;padding:.6rem .75rem;border-bottom:1px solid var(--line)}
+  .doc-table tbody td{border:0;padding:.4rem .25rem;background:transparent}
+  .doc-table tbody td.name-cell{padding-right:.5rem}
   .col-file{width:auto}
-  .doc-table td.col-file{padding-top:.25rem}
+  .doc-icon{display:none}
+  .doc-name{font-size:.95rem}
+  .doc-desc{font-size:.82rem}
+  .dl{min-width:0;padding:.45rem .55rem}
+  .dl i{font-size:1.7rem}
+  .dl span{font-size:.65rem}
+}
+@media (max-width:359px){
+  .dl span{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
